@@ -10,4 +10,16 @@ def api_status():
     response = ('status': 'OK')
     return jsonify(response)
 
-
+#task 4
+@app_views.route('/stats', methods=['GET'])
+def get_stats():
+    """ Retrieve the no. of each object by type"""
+    stats = {
+        "amenities": storage.count('Amenity'), 
+        "cities":storage.count('City'), 
+        "places": storage.count('Places'), 
+        "reviews": storage.count('Reviews'), 
+        "states": storage.count('States'), 
+        "users": storage.count('Users')
+    }
+    return jsonify(stats)
