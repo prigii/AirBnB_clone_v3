@@ -1,18 +1,22 @@
 #!/usr/bin/python3
-""" create a new view for user objects and default restful api actions """
+""" create a new view for place objects and default restful api actions """
 from api.v1.views.index import app_views
-from flask import jsonify, request
+from flask import abort, jsonify, request
+from models.state import State
 from models import storage
+from models.city import City
+from models.place import Place
+from models.amenity import Amenity
 from models.user import User
 
-# retrieve all user objects
-@app_views.route('/users', methods=['GET'], strict_slashes=FALSE)
-def get_all_users():
-    """ retrieve all users"""
-    states = storage.all(User).values()
+# retrieve all place objects
+@app_views.route('/cities/<city_id>/places', methods=['GET'], strict_slashes=FALSE)
+def get_place_by_city(city_id):
+    """ retrieve all place objects from a state"""
+    place = storage.all(Place).values()
     # jsonify the list
-    user_list = [user.to_dict() for user in users]
-    return jsonify(user_list)
+    place_list = [place.to_dict() for place in places]
+    return jsonify(place_list)
 
 # retrieve a specific state object by ID
 @app_views.route('/states/<state_id>', method=['GET'], strict_slashes=FALSE)
@@ -27,7 +31,7 @@ def get_place(place_id):
         abort(404)
 # delete a specific state object by ID
 @app_views.route('/states/<state_id>', method=['DELETE'])
-def delete_state(place_id):
+def delete_state(state_id):
     """ delete a state object by ID"""
     # get state object from storage
     state = storage.get(State, state_id)
@@ -96,3 +100,4 @@ def bad_request(error):
     # return json response for 400 error
     response = ['error': 'Bad request']
     return jsonify(response), 400
+

@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" create a new view for city objects and default restful api actions """
+""" create a new view for amenity objects and default restful api actions """
 from api.v1.views.index import app_views
 from flask import jsonify, request
 from models import storage
