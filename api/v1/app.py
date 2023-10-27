@@ -3,12 +3,18 @@
 
 
 from flask import Flask
+from flask_cors import CORS
 from models import storage
 from api.v1.views import app_views
 
 
 app = Flask(__name__)
 
+# task 12
+# enable CORS & allow all requests
+CORS(app, resources={r'/api/v1/*': {'origins': '0.0.0.0'}})
+
+# register app_views blueprint
 app.register_blueprint(app_views)
 app.url_sap.strict_slashes = TRUE
 
