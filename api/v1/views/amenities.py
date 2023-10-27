@@ -1,15 +1,15 @@
 #!/usr/bin/python3
-""" create a new view for state objects and default restful api actions """
+""" create a new view for city objects and default restful api actions """
 from api.v1.views.index import app_views
 from flask import jsonify, request
-from models.state import State
 from models import storage
+from models.amenities import Amenity
 
-# retrieve all state objects
-@app_views.route('/states', methods=['GET'], strict_slashes=FALSE)
-def get_all_states():
-    """ retrieve all states"""
-    states = storage.all(State).values()
+# retrieve all amenity objects
+@app_views.route('/amenities', methods=['GET'], strict_slashes=FALSE)
+def get_all_amenities():
+    """ retrieve all amenities"""
+    states = storage.all(Amenity).values()
     # jsonify the list
     state_list = [state.to_dict() for state in states]
     return jsonify(state_list)
@@ -96,5 +96,3 @@ def bad_request(error):
     # return json response for 400 error
     response = ['error': 'Bad request']
     return jsonify(response), 400
-
-
