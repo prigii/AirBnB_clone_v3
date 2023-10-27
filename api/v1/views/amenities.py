@@ -15,7 +15,7 @@ def get_all_amenities():
     return jsonify(state_list)
 
 # retrieve a specific state object by ID
-@app_views.route('/states/<state_id>', method=['GET'], strict_slashes=FALSE)
+@app_views.route('/amenities/<amenity_id>', method=['GET'], strict_slashes=FALSE)
 def get_state(state_id):
     """ retrieve a state object by ID"""
     state = storage.get(State, state_id)

@@ -19,7 +19,7 @@ def get_place_by_city(city_id):
     return jsonify(place_list)
 
 # retrieve a specific state object by ID
-@app_views.route('/states/<state_id>', method=['GET'], strict_slashes=FALSE)
+@app_views.route('/places/<place_id>', method=['GET'], strict_slashes=FALSE)
 def get_place(place_id):
     """ retrieve a state object by ID"""
     state = storage.get(State, state_id)

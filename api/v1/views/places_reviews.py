@@ -1,22 +1,24 @@
 #!/usr/bin/python3
-""" create a new view for user objects and default restful api actions """
+""" create a new view for review objects and default restful api actions """
 from api.v1.views.index import app_views
-from flask import jsonify, request
+from flask import abort, jsonify, request
 from models import storage
-from models.user import User
+from models.place import Place
+from models.review import Review
 
-# retrieve all user objects
-@app_views.route('/users', methods=['GET'], strict_slashes=FALSE)
-def get_all_users():
-    """ retrieve all users"""
-    states = storage.all(User).values()
+
+# retrieve all review  objects
+@app_views.route('/places/<place_id>/reviews', methods=['GET'], strict_slashes=FALSE)
+def get_reviews_by_place(place_id):
+    """ retrieve all review objects from a state"""
+    review = storage.all(Review).values()
     # jsonify the list
-    user_list = [user.to_dict() for user in users]
-    return jsonify(user_list)
+    review_list = [review.to_dict() for review in reviews]
+    return jsonify(review_list)
 
 # retrieve a specific state object by ID
-@app_views.route('/users/<user_id>', method=['GET'], strict_slashes=FALSE)
-def get_user(user_id):
+@app_views.route('/reviews/<review_id>', method=['GET'], strict_slashes=FALSE)
+def get_place(place_id):
     """ retrieve a state object by ID"""
     state = storage.get(State, state_id)
     if state:
@@ -27,7 +29,7 @@ def get_user(user_id):
         abort(404)
 # delete a specific state object by ID
 @app_views.route('/states/<state_id>', method=['DELETE'])
-def delete_state(place_id):
+def delete_state(state_id):
     """ delete a state object by ID"""
     # get state object from storage
     state = storage.get(State, state_id)
@@ -96,3 +98,4 @@ def bad_request(error):
     # return json response for 400 error
     response = ['error': 'Bad request']
     return jsonify(response), 400
+
