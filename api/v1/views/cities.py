@@ -7,7 +7,10 @@ from models import storage
 from models.city import City
 
 # retrieve all city objects
-@app_views.route('/states/<state_id>/cities', methods=['GET'], strict_slashes=False)
+
+
+@app_views.route('/states/<state_id>/cities', methods=['GET'],
+                 strict_slashes=False)
 def get_city_by_states(state_id):
     """ retrieve all city objects from a cities"""
     cities = storage.all(City).values()
@@ -16,6 +19,8 @@ def get_city_by_states(state_id):
     return jsonify(cities_list)
 
 # retrieve a specific cities object by ID
+
+
 @app_views.route('/cities/<city_id>', method=['GET'], strict_slashes=False)
 def get_city(city_id):
     """ retrieve a city object by ID"""
@@ -27,6 +32,8 @@ def get_city(city_id):
         # return 404 error in case cities is not found
         abort(404)
 # delete a specific cities object by ID
+
+
 @app_views.route('/cities/<city_id>', method=['DELETE'])
 def delete_city(city_id):
     """ delete a cities object by ID"""
@@ -41,7 +48,9 @@ def delete_city(city_id):
     else:
         # return 404 error in case cities is not found
         abort(404)
-# create a new city object 
+# create a new city object
+
+
 @app_views.route('/cities/<city_id>', method=['POST'], strict_slashes=False)
 def create_city(city_id):
     """ creates a city object """
@@ -60,6 +69,8 @@ def create_city(city_id):
     # return newly created json object
     return jsonify(city.to_dict()), 201
 # updating existing city object by ID
+
+
 @app_views.route('/cities/<city_id>', method=['PUT'], strict_slashes=False)
 def update_city(city_id):
     """ updates a city object """
@@ -67,7 +78,7 @@ def update_city(city_id):
     city = storage.get(City, city_id)
     if city:
         if not request.get_json():
-        # return 400 error if request data not in json format
+            # return 400 error if request data not in json format
             abort(400, 'Not a JSON call')
         # get the json data from the request
         data = request.get_json()
@@ -75,7 +86,7 @@ def update_city(city_id):
         # update the attrib of the object with the json data
         for key, value in data.items():
             if key not in ignore_keys:
-                setattr (city, key, value)
+                setattr(city, key, value)
         # save the updated cities object to storage
         city.save()
         # return updated object in JSON format w/ 200 code
@@ -84,12 +95,15 @@ def update_city(city_id):
         # return code 404
         abort(404)
 # error handler
+
+
 @app_views.errorhandler(404)
 def not_found(error):
     """ raise code 404 """
     # return a json response for 404 error
     response = [{'error': 'Not found'}]
     return jsonify(response), 404
+
 
 @app_views.errorhandler(400)
 def bad_request(error):

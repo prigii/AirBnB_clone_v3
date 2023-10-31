@@ -6,6 +6,8 @@ from models.state import State
 from models import storage
 
 # retrieve all state objects
+
+
 @app_views.route('/states', methods=['GET'], strict_slashes=False)
 def get_all_states():
     """ retrieve all states"""
@@ -15,6 +17,8 @@ def get_all_states():
     return jsonify(state_list)
 
 # retrieve a specific state object by ID
+
+
 @app_views.route('/states/<state_id>', method=['GET'], strict_slashes=False)
 def get_state(state_id):
     """ retrieve a state object by ID"""
@@ -26,6 +30,8 @@ def get_state(state_id):
         # return 404 error in case state is not found
         abort(404)
 # delete a specific state object by ID
+
+
 @app_views.route('/states/<state_id>', method=['DELETE'])
 def delete_state(state_id):
     """ delete a state object by ID"""
@@ -40,7 +46,9 @@ def delete_state(state_id):
     else:
         # return 404 error in case state is not found
         abort(404)
-# create a new state object 
+# create a new state object
+
+
 @app_views.route('/states/<state_id>', method=['POST'], strict_slashes=False)
 def create_state(state_id):
     """ creates a state object """
@@ -59,6 +67,8 @@ def create_state(state_id):
     # return newly created json object
     return jsonify(state.to_dict()), 201
 # updating existing state object by ID
+
+
 @app_views.route('/states/<state_id>', method=['PUT'], strict_slashes=False)
 def update_state(state_id):
     """ updates a state object """
@@ -66,7 +76,7 @@ def update_state(state_id):
     state = storage.get(State, state_id)
     if state:
         if not request.get_json():
-        # return 400 error if request data not in json format
+            # return 400 error if request data not in json format
             abort(400, 'Not a JSON call')
         # get the json data from the request
         data = request.get_json()
@@ -74,21 +84,24 @@ def update_state(state_id):
         # update the attrib of the object with the json data
         for key, value in data.items():
             if key not in ignore_keys:
-                setattr (state, key, value)
+                setattr(state, key, value)
         # save the updated state object to storage
         state.save()
         # return updated object in JSON format w/ 200 code
         return jsonify(state.to_dict()), 200
     else:
         # return code 404
-        abort(404) 
+        abort(404)
 # error handler
+
+
 @app_views.errorhandler(404)
 def not_found(error):
     """ raise code 404 """
     # return a json response for 404 error
     response = [{'error': 'Not found'}]
     return jsonify(response), 404
+
 
 @app_views.errorhandler(400)
 def bad_request(error):

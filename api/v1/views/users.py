@@ -6,6 +6,8 @@ from models import storage
 from models.user import User
 
 # retrieve all user objects
+
+
 @app_views.route('/users', methods=['GET'], strict_slashes=False)
 def get_all_users():
     """ retrieve all users"""
@@ -15,6 +17,8 @@ def get_all_users():
     return jsonify(user_list)
 
 # retrieve a specific user object by ID
+
+
 @app_views.route('/users/<user_id>', method=['GET'], strict_slashes=False)
 def get_user(user_id):
     """ retrieve a user object by ID"""
@@ -26,6 +30,8 @@ def get_user(user_id):
         # return 404 error in case user is not found
         abort(404)
 # delete a specific user object by ID
+
+
 @app_views.route('/users/<user_id>', method=['DELETE'])
 def delete_user(user_id):
     """ delete a user object by ID"""
@@ -40,7 +46,9 @@ def delete_user(user_id):
     else:
         # return 404 error in case user is not found
         abort(404)
-# create a new user object 
+# create a new user object
+
+
 @app_views.route('/users/<user_id>', method=['POST'], strict_slashes=False)
 def create_user(user_id):
     """ creates a user object """
@@ -59,6 +67,8 @@ def create_user(user_id):
     # return newly created json object
     return jsonify(user.to_dict()), 201
 # updating existing user object by ID
+
+
 @app_views.route('/users/<user_id>', method=['PUT'], strict_slashes=False)
 def update_user(user_id):
     """ updates a user object """
@@ -66,7 +76,7 @@ def update_user(user_id):
     user = storage.get(User, user_id)
     if user:
         if not request.get_json():
-        # return 400 error if request data not in json format
+            # return 400 error if request data not in json format
             abort(400, 'Not a JSON call')
         # get the json data from the request
         data = request.get_json()
@@ -74,21 +84,24 @@ def update_user(user_id):
         # update the attrib of the object with the json data
         for key, value in data.items():
             if key not in ignore_keys:
-                setattr (user, key, value)
+                setattr(user, key, value)
         # save the updated user object to storage
         user.save()
         # return updated object in JSON format w/ 200 code
         return jsonify(user.to_dict()), 200
     else:
         # return code 404
-        abort(404) 
+        abort(404)
 # error handler
+
+
 @app_views.errorhandler(404)
 def not_found(error):
     """ raise code 404 """
     # return a json response for 404 error
     response = [{'error': 'Not found'}]
     return jsonify(response), 404
+
 
 @app_views.errorhandler(400)
 def bad_request(error):
